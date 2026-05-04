@@ -39,7 +39,7 @@ PUBLIC dataset:
 https://zenodo.org/communities/pspm
 
 UMAC dataset:
-https://github.com/jjizza/UMAC-Dataset
+https://github.com/jzizza/UMAC-Dataset
 
 ---
 
