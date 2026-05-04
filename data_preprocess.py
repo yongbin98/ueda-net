@@ -262,64 +262,18 @@ def subject_split_and_stack(dataset_path, test_ratio=0.1, seed=99, load_all=Fals
     print("📥 Loading dataset:", data_path1)
     data = torch.load(data_path1, weights_only=False)
 
-    # ----------------------
-    # Public dataset
-    # ----------------------
     noise_bank = {
-        'addictive_noise':  data['addictive_noise'],
-        'noise_filt_cmad1': data['noise_filt_cmad1'],
-        'noise_filt_cmad2': data['noise_filt_cmad2'],
-        'noise_filt_umad1': data['noise_filt_umad1'],
-        'noise_filt_umad2': data['noise_filt_umad2'],
-        'noise_imu_cmad1':  data['noise_imu_cmad1'],
-        'noise_imu_umad1':  data['noise_imu_umad1']
+        'addictive_noise':  data['addictive_noise']
     }
 
     target_public  = data['target_public']
     subject_public = data['subject_public']
 
-    # ----------------------
-    # CMAD1 dataset
-    # ----------------------
-    noisy_CMAD1     = data['noisy_CMAD1']
-    noisy_GAN_CMAD1 = data['noisy_GAN_CMAD1']
-    target_CMAD1    = data['target_CMAD1']
-    subject_CMAD1   = data['subject_CMAD1']
-
-    # ----------------------
-    # CMAD2 dataset
-    # ----------------------
-    noisy_CMAD2     = data['noisy_CMAD2']
-    noisy_GAN_CMAD2 = data['noisy_GAN_CMAD2']
     target_CMAD2    = data['target_CMAD2']
     subject_CMAD2   = data['subject_CMAD2']
 
-    # ----------------------
-    # UMAC1 dataset
-    # ----------------------
-    noisy_UMAD1    = data['noisy_UMAD1']
-    noisy_GAN_UMAD1= data['noisy_GAN_UMAD1']
-    target_UMAD1   = data['target_UMAD1']
-    subject_UMAD1  = data['subject_UMAD1']
-
-    # ----------------------
-    # UMAC2 dataset
-    # ----------------------
-    noisy_UMAD2    = data['noisy_UMAD2']
-    noisy_GAN_UMAD2= data['noisy_GAN_UMAD2']
-    target_UMAD2   = data['target_UMAD2']
-    subject_UMAD2  = data['subject_UMAD2']
-
-    # ----------------------
-    # CNSOT1 & CNSOT2 dataset
-    # ----------------------
-    noisy_CNSOT1   = data['noisy_CNSOT1']
-    subject_CNSOT1 = data['subject_CNSOT1']
-    label_CNSOT1   = data['label_CNSOT1']
-
-    noisy_CNSOT2   = data['noisy_CNSOT2']
-    subject_CNSOT2 = data['subject_CNSOT2']
-    label_CNSOT2   = data['label_CNSOT2']
+    target_UMAD   = data['target_UMAD']
+    subject_UMAD  = data['subject_UMAD']
 
     print("✔ All datasets loaded successfully!")
 
@@ -327,15 +281,11 @@ def subject_split_and_stack(dataset_path, test_ratio=0.1, seed=99, load_all=Fals
     if(load_all == False):
         print("Splitting CMAD dataset...")
         CMAD_target_tr, CMAD_target_te, CMAD_subj_tr, CMAD_subj_te = \
-            subject_split(target_CMAD1, subject_CMAD1, test_ratio=test_ratio, seed=seed)
-
-        print("Splitting UMAD1 dataset...")
-        UMAD1_target_tr, UMAD1_target_te, UMAD1_subj_tr, UMAD1_subj_te = \
-            subject_split(target_UMAD1, subject_UMAD1, test_ratio=test_ratio, seed=seed)
+            subject_split(target_CMAD2, subject_CMAD2, test_ratio=test_ratio, seed=seed)
 
         print("Splitting UMAD2 dataset...")
-        UMAD2_target_tr, UMAD2_target_te, UMAD2_subj_tr, UMAD2_subj_te = \
-            subject_split(target_UMAD2, subject_UMAD2, test_ratio=test_ratio, seed=seed)
+        UMAD_target_tr, UMAD_target_te, UMAD_subj_tr, UMAD_subj_te = \
+            subject_split(target_UMAD, subject_UMAD, test_ratio=test_ratio, seed=seed)
 
         print("Splitting PUBLIC dataset...")
         pub_target_tr, pub_target_te, pub_subj_tr, pub_subj_te = \
@@ -374,34 +324,19 @@ def subject_split_and_stack(dataset_path, test_ratio=0.1, seed=99, load_all=Fals
             CMAD_noisy_te_final[i, :] = noisy_sample.squeeze()
             problem_log.append(current_problems)
 
-        # N, L = np.shape(UMAD1_target_te)
-        # UMAD1_target_te_final = np.zeros((N, L))
-        # UMAD1_noisy_te_final = np.zeros((N, L))
-        # for i in range(N):
-        #     target_sample, noisy_sample, current_problems = noise_augmentation(
-        #         UMAD1_target_te[i:i+1],
-        #         noise_bank,
-        #         for_valid=True,
-        #         rng=val_rng
-        #     )
-        #     # Store the result back
-        #     UMAD1_target_te_final[i, :] = target_sample.squeeze()
-        #     UMAD1_noisy_te_final[i, :] = noisy_sample.squeeze()
-        #     problem_log.append(current_problems)
-
-        N, L = np.shape(UMAD2_target_te)
-        UMAD2_target_te_final = np.zeros((N, L))
-        UMAD2_noisy_te_final = np.zeros((N, L))
+        N, L = np.shape(UMAD_target_te)
+        UMAD_target_te_final = np.zeros((N, L))
+        UMAD_noisy_te_final = np.zeros((N, L))
         for i in range(N):
             target_sample, noisy_sample, current_problems = noise_augmentation(
-                UMAD2_target_te[i:i+1],
+                UMAD_target_te[i:i+1],
                 noise_bank,
                 for_valid=True,
                 rng=val_rng
             )
             # Store the result back
-            UMAD2_target_te_final[i, :] = target_sample.squeeze()
-            UMAD2_noisy_te_final[i, :] = noisy_sample.squeeze()
+            UMAD_target_te_final[i, :] = target_sample.squeeze()
+            UMAD_noisy_te_final[i, :] = noisy_sample.squeeze()
             problem_log.append(current_problems)
 
         cache_file = 'validation_set.pt'
@@ -413,12 +348,9 @@ def subject_split_and_stack(dataset_path, test_ratio=0.1, seed=99, load_all=Fals
                         'CMAD_target_tr': CMAD_target_tr,
                         'CMAD_target_te_final': CMAD_target_te_final,
                         'CMAD_noisy_te_final': CMAD_noisy_te_final,
-                        # 'UMAD1_target_tr': UMAD1_target_tr,
-                        # 'UMAD1_target_te_final': UMAD1_target_te_final,
-                        # 'UMAD1_noisy_te_final': UMAD1_noisy_te_final,
-                        'UMAD2_target_tr': UMAD2_target_tr,
-                        'UMAD2_target_te_final': UMAD2_target_te_final,
-                        'UMAD2_noisy_te_final': UMAD2_noisy_te_final,
+                        'UMAD_target_tr': UMAD_target_tr,
+                        'UMAD_target_te_final': UMAD_target_te_final,
+                        'UMAD_noisy_te_final': UMAD_noisy_te_final,
                         'problem_log': problem_log
                         }, cache_file)
 
@@ -433,82 +365,35 @@ def subject_split_and_stack(dataset_path, test_ratio=0.1, seed=99, load_all=Fals
         CMAD_target_tr = data['CMAD_target_tr']
         CMAD_noisy_te_final = data['CMAD_noisy_te_final']
         CMAD_target_te_final = data['CMAD_target_te_final']
-        # UMAD1_target_tr = data['UMAD1_target_tr']
-        # UMAD1_target_te_final = data['UMAD1_target_te_final']
-        # UMAD1_noisy_te_final = data['UMAD1_noisy_te_final']
-        UMAD2_target_tr = data['UMAD2_target_tr']
-        UMAD2_target_te_final = data['UMAD2_target_te_final']
-        UMAD2_noisy_te_final = data['UMAD2_noisy_te_final']
+        UMAD_target_tr = data['UMAD_target_tr']
+        UMAD_target_te_final = data['UMAD_target_te_final']
+        UMAD_noisy_te_final = data['UMAD_noisy_te_final']
         problem_log = data['problem_log']
         
-        print_dataset_info(
-            "PUBLIC - TRAIN",
-            pub_target_tr,
-            data.get('pub_subj_tr', None)
-        )
-
-        print_dataset_info(
-            "PUBLIC - VALID",
-            pub_target_te_final,
-            data.get('pub_subj_te', None)
-        )
-
-        print_dataset_info(
-            "CMAD - TRAIN",
-            CMAD_target_tr,
-            data.get('CMAD_subj_tr', None)
-        )
-
-        print_dataset_info(
-            "CMAD - VALID",
-            CMAD_target_te_final,
-            data.get('CMAD_subj_te', None)
-        )
-
-        print_dataset_info(
-            "UMAD2 - TRAIN",
-            UMAD2_target_tr,
-            data.get('UMAD2_subj_tr', None)
-        )
-
-        print_dataset_info(
-            "UMAD2 - VALID",
-            UMAD2_target_te_final,
-            data.get('UMAD2_subj_te', None)
-        )
-
     noisy_train = np.vstack([
         pub_target_tr,
-        target_CMAD2,
         CMAD_target_tr,
-        UMAD2_target_tr,
+        UMAD_target_tr,
     ])
 
     target_train = np.vstack([
         pub_target_tr,
-        target_CMAD2,
         CMAD_target_tr,
-        UMAD2_target_tr,
+        UMAD_target_tr,
     ])
 
     noisy_test = np.vstack([
         pub_noisy_te_final,
         CMAD_noisy_te_final,
-        UMAD2_noisy_te_final,
+        UMAD_noisy_te_final,
     ])
 
     target_test = np.vstack([
         pub_target_te_final,
         CMAD_target_te_final,
-        UMAD2_target_te_final,
+        UMAD_target_te_final,
     ])
 
-    independent_test = np.vstack([
-        noisy_GAN_UMAD1,
-        noisy_GAN_UMAD2,
-        noisy_CNSOT1,
-        noisy_CNSOT2
-    ])
     # ---------------------
     # Summary
     # ---------------------
@@ -520,12 +405,10 @@ def subject_split_and_stack(dataset_path, test_ratio=0.1, seed=99, load_all=Fals
     print(f"Test Noisy  : {noisy_test.shape}")
     print(f"Test Clean  : {target_test.shape}")
     print("----------------------------------")
-    print(f"Independent Test (Noisy): {independent_test.shape}")
-    print("----------------------------------")
 
     return (
         noisy_train, noisy_test,
         target_train, target_test,
-        independent_test, noise_bank, problem_log
+        noise_bank, problem_log
     )
 
