@@ -1,8 +1,8 @@
-# uDEA-Net: Underwater EDA Denoising Model
+# uEDA-Net: Underwater EDA Denoising Model
 
 ## Overview
 
-uDEA-Net is a lightweight deep learning framework for robust electrodermal activity (EDA) denoising under harsh environments, including underwater and motion artifact conditions.
+uEDA-Net is a lightweight deep learning framework for robust electrodermal activity (EDA) denoising under harsh environments, including underwater and motion artifact conditions.
 
 The model is designed to:
 
@@ -30,8 +30,8 @@ requirements.txt    # Dependencies
 ## ⚙️ Installation
 
 ```bash
-git clone https://github.com/yongbin98/uDEA-Net.git
-cd uDEA-Net
+git clone https://github.com/yongbin98/uEDA-Net.git
+cd uEDA-Net
 pip install -r requirements.txt
 ```
 
