@@ -27,14 +27,6 @@ requirements.txt    # Dependencies
 
 ---
 
-## ⚙️ Installation
-
-```bash
-git clone https://github.com/yongbin98/uEDA-Net.git
-cd uEDA-Net
-pip install -r requirements.txt
-```
-
 ## 📊 Dataset
 
 This project uses multiple datasets:
