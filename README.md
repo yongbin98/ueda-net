@@ -54,11 +54,6 @@ https://github.com/jzizza/UMAC-Dataset
 
 If you find this repository useful for your research, please cite our paper:
 
-**Memory-Efficient EDA Denoising via Knowledge Distillation for Wearable IoT Under Severe Motion Artifacts and Underwater Conditions**  
-Yongbin Lee, Andrew Peitzsch, Youngsun Kong, Jarod Zizza, Dong-hee Kang, Farnoush Baghestani, and Ki H. Chon  
-arXiv:2605.05246, 2026.  
-DOI: https://doi.org/10.48550/arXiv.2605.05246
-
 ```bibtex
 @article{lee2026memory,
   title={Memory-Efficient EDA Denoising via Knowledge Distillation for Wearable IoT Under Severe Motion Artifacts and Underwater Conditions},
