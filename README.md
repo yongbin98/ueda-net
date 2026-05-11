@@ -8,7 +8,7 @@ The model is designed to:
 
 * Remove motion artifacts from EDA signals
 * Preserve tonic and phasic components
-* Generalize across multiple datasets (PUBLIC, CMAD, UMAD)
+* Generalize across multiple datasets (PUBLIC, CMAD, UMAC)
 
 ---
 
